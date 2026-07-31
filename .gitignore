@@ -1,0 +1,25 @@
+# Compilados de Java / Maven
+target/
+*.jar
+*.class
+
+# Terraform 
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+terraform/kind-config-*
+
+# Agente de Jenkins 
+agent.jar
+
+# Archivos del sistema / editor
+.DS_Store
+.vscode/
+*.log
+
+# Secretos 
+*secret-file*
+
+# Kubeconfigs que genera el provider de Kind (específicos de la máquina)
+terraform/*-config
