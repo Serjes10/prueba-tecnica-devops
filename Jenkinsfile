@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         VAULT_ADDR = 'http://localhost:8200'
-        VAULT_TPKEN = 'root'
+        VAULT_TOKEN = 'root'
         IMAGE_NAME = 'microservice'
         DEV_CONTEXT = 'kind-development'
     }
@@ -20,7 +20,7 @@ pipeline {
                             $json.data.data.APP_SECRET
                         '''
                     ).trim()
-                    env.APP_SECRET = secret
+                    env.APP_SECRET = secret.replaceAll("[\\r\\n]", "").trim()
                     echo "Secreto leido de Vault correctamente"
                 }
             }
@@ -43,7 +43,9 @@ pipeline {
         stage('4. Deply en development'){
             steps{
                 bat "kubectl --context %DEV_CONTEXT% apply -f k8s-manifests/"
-                bat "kubectl --context %DEV_CONTEXT% set env deployment/microservice APP_SECRET=%APP_SECRET%"
+                powershell '''
+                    kubectl --context $env:DEV_CONTEXT set env deployment/microservice APP_SECRET="$env:APP_SECRET"
+                '''
                 bat "kubectl --context %DEV_CONTEXT% rollout status deployment/microservice --timeout=120s"
             }
         }
