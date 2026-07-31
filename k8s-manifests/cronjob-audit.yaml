@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: kubelet-event-audit
+  namespace: default
+spec:
+  schedule: "*/10 * * * *"          
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: audit-sa
+          containers:
+            - name: audit
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  echo "=== Auditoria de eventos del kubelet: $(date) ==="
+                  kubectl get events --field-selector source=kubelet -A
+          restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: audit-sa
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: event-reader
+rules:
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: audit-sa-binding
+subjects:
+  - kind: ServiceAccount
+    name: audit-sa
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: event-reader
+  apiGroup: rbac.authorization.k8s.io
