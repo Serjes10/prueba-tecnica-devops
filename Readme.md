@@ -220,7 +220,7 @@ En Jenkins: **Nueva Tarea → Pipeline**. En la configuración:
 - **Definition:** Pipeline script from SCM
 - **SCM:** Git
 - **Repository URL:** URL del repositorio
-- **Credentials:** token de GitHub (Personal Access Token con scope `repo`)
+- **Credentials:** repositorio publico (para efectos de la prueba)
 - **Branch Specifier:** `*/main`
 - **Script Path:** `Jenkinsfile`
 ### 7. Ejecutar
