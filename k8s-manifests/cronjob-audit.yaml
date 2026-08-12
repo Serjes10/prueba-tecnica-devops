@@ -4,7 +4,7 @@ metadata:
   name: kubelet-event-audit
   namespace: default
 spec:
-  schedule: "*/10 * * * *"          
+  schedule: "*/01 * * * *"          
   jobTemplate:
     spec:
       template:

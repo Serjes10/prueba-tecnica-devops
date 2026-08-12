@@ -30,18 +30,18 @@ El pipeline de CI/CD se conecta a Vault para leer un secreto, lo inyecta como va
 ## Arquitectura
  
 ```
-┌───────────────────────────────────────────────────────────────────────┐
-│                              WINDOWS (host)                             │
-│                                                                         │
-│   Docker Desktop                                                        │
-│                                                                         │
-│  ┌────────────────────────────────┐   ┌────────────────────────────┐   │
+┌──────────────────────────────────────────────────────────────────────────┐
+│                              WINDOWS (host)                              │
+│                                                                          │
+│   Docker Desktop                                                         │
+│                                                                          │
+│  ┌─────────────────────────────────┐   ┌─────────────────────────────┐   │
 │  │  CLÚSTER "deployment" (Kind)    │   │  CLÚSTER "development"(Kind)│   │
 │  │  contenedor Docker              │   │  contenedor Docker          │   │
 │  │                                 │   │                             │   │
 │  │  ┌──────────┐   ┌───────────┐   │   │   ┌─────────────────────┐   │   │
-│  │  │  Jenkins │   │   Vault    │  │   │   │  Service (NodePort) │   │   │
-│  │  │  (CI/CD) │   │ (secretos) │  │   │   │   balanceador       │   │   │
+│  │  │  Jenkins │   │   Vault   │  │   │   │  Service (NodePort) │   │   │
+│  │  │  (CI/CD) │   │ (secretos)│  │   │   │   balanceador       │   │   │
 │  │  └────┬─────┘   └─────┬─────┘   │   │   └──────────┬──────────┘   │   │
 │  │       │               │         │   │              │              │   │
 │  └───────┼───────────────┼─────────┘   │      ┌───────┴───────┐      │   │
